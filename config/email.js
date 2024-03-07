@@ -6,14 +6,15 @@ const { secret } = require('./secret');
 module.exports.sendEmail = (body, res, message) => {
   const transporter = nodemailer.createTransport({
     host: secret.email_host,
-    service: secret.email_service, //comment this line if you use custom server/domain
+   // service: secret.email_service, //comment this line if you use custom server/domain
     port: secret.email_port,
-    secure: true,
+    // secure: true,
     auth: {
       user: secret.email_user,
       pass: secret.email_pass,
     },
   });
+
 
   transporter.verify(function (err, success) {
     if (err) {
@@ -27,7 +28,9 @@ module.exports.sendEmail = (body, res, message) => {
   });
 
   transporter.sendMail(body, (err, data) => {
+    console.log(err);
     if (err) {
+      console.log(err.message);
       res.status(403).send({
         message: `Error happen when sending email ${err.message}`,
       });
